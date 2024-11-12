@@ -1,0 +1,29 @@
+name: NPM Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    name: Publish Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: true
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Authenticate to npm registry
+        run: |
+          echo "@djosar:registry=https://npm.pkg.github.com/" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+      - name: Publish
+        run: pnpm publish --no-git-checks
