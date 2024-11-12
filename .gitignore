@@ -1,0 +1,13 @@
+.idea
+.vscode
+
+### macOS ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+node_modules
+dist
+
+.npmrc
+release
